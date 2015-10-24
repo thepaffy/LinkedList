@@ -74,6 +74,7 @@ void LinkedList<T>::insert(unsigned int xIndex, T t)
     Link *tLink = new Link(tLinkOnIndex->mPre, tLinkOnIndex, t);
     tLinkOnIndex->mPre->mNext = tLink;
     tLinkOnIndex->mPre = tLink;
+    mSize++;
 }
 
 template<typename T>

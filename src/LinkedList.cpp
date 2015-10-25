@@ -38,7 +38,7 @@ LinkedList<T>::~LinkedList()
     Link *tLink = mEnd->mPre;
     while (tLink != mHead)
     {
-        tLink = tLink->mPre;            // decrement link
+        tLink = tLink->mPre;         // decrement link
         delete tLink->mNext;         // delete the element after current element
     }
 
@@ -67,7 +67,7 @@ void LinkedList<T>::append(T t)
 template<typename T>
 void LinkedList<T>::insert(unsigned int xIndex, T t)
 {
-    if (xIndex >= mSize)
+    if (xIndex > mSize)     // inserting can be also appending
         throw std::range_error("Index out of range!");
 
     Link *tLinkOnIndex = linkToIndex(xIndex);
@@ -140,8 +140,10 @@ typename LinkedList<T>::Link *LinkedList<T>::linkToIndex(unsigned int xIndex)
 // bool
 //template class LinkedList<bool> ;
 //
-//// characters
+//// characters & strings
 //template class LinkedList<char> ;
+//template class LinkedList<char *> ;
+//template class LinkedList<const char *> ;
 //
 //// integers
 //template class LinkedList<signed char> ;

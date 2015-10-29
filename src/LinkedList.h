@@ -34,11 +34,11 @@ public:
         return mSize;
     }
 
-    void prepend(T t);
-    void append(T t);
-    void insert(unsigned int xIndex, T t);
+    void prepend(const T &t);
+    void append(const T &t);
+    void insert(unsigned int xIndex, const T &t);
     T at(unsigned int xIndex);
-    void assign(unsigned int xIndex, T t);
+    void assign(unsigned int xIndex, const T &t);
     T remove(unsigned int xIndex);
 
 private:

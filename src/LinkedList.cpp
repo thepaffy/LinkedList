@@ -47,7 +47,7 @@ LinkedList<T>::~LinkedList()
 }
 
 template<typename T>
-void LinkedList<T>::prepend(T t)
+void LinkedList<T>::prepend(const T &t)
 {
     Link *tLink = new Link(mHead, mHead->mNext, t);
     mHead->mNext->mPre = tLink;
@@ -56,7 +56,7 @@ void LinkedList<T>::prepend(T t)
 }
 
 template<typename T>
-void LinkedList<T>::append(T t)
+void LinkedList<T>::append(const T &t)
 {
     Link *tLink = new Link(mEnd->mPre, mEnd, t);
     mEnd->mPre->mNext = tLink;
@@ -65,7 +65,7 @@ void LinkedList<T>::append(T t)
 }
 
 template<typename T>
-void LinkedList<T>::insert(unsigned int xIndex, T t)
+void LinkedList<T>::insert(unsigned int xIndex, const T &t)
 {
     if (xIndex > mSize)     // inserting can be also appending
         throw std::range_error("Index out of range!");
@@ -88,7 +88,7 @@ T LinkedList<T>::at(unsigned int xIndex)
 }
 
 template<typename T>
-void LinkedList<T>::assign(unsigned int xIndex, T t)
+void LinkedList<T>::assign(unsigned int xIndex, const T &t)
 {
     if (xIndex >= mSize)
         throw std::range_error("Index out of range!");

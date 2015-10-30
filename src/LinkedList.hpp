@@ -1,11 +1,55 @@
 /*
- * LinkedList.cpp
+ * LinkedList.h
  *
  *  Created on: 23 Oct 2015
  *      Author: thepaffy
  */
 
-#include <LinkedList.h>
+#ifndef LINKEDLIST_HPP_
+#define LINKEDLIST_HPP_
+
+#include <cassert>
+
+template<typename T>
+class LinkedList
+{
+    class Link
+    {
+    public:
+        Link(Link *xPre, Link *xNext, const T& xValue)
+                : mPre(xPre), mNext(xNext), mValue(xValue)
+        {
+        }
+        Link *mPre;
+        Link *mNext;
+        T mValue;
+    };
+public:
+    explicit LinkedList();
+    LinkedList(const LinkedList<T> &xOther);
+    ~LinkedList();
+
+    void prepend(const T &t);
+    void append(const T &t);
+    void insert(unsigned int xIndex, const T &t);
+    T &at(unsigned int xIndex);
+    const T &at(unsigned int xIndex) const;
+    void assign(unsigned int xIndex, const T &t);
+    void remove(unsigned int xIndex);
+    unsigned int size() const;
+
+private:
+    void init();
+    Link *linkToIndex(unsigned int xIndex) const;
+
+    unsigned int mSize;
+    Link *mHead;
+    Link *mEnd;
+};
+
+/*
+ * Impl
+ */
 
 template<typename T>
 LinkedList<T>::LinkedList()
@@ -67,8 +111,7 @@ void LinkedList<T>::append(const T &t)
 template<typename T>
 void LinkedList<T>::insert(unsigned int xIndex, const T &t)
 {
-    if (xIndex > mSize)     // inserting can be also appending
-        throw std::range_error("Index out of range!");
+    assert(xIndex <= mSize);     // inserting can be also appending
 
     Link *tLinkOnIndex = linkToIndex(xIndex);
     Link *tLink = new Link(tLinkOnIndex->mPre, tLinkOnIndex, t);
@@ -78,10 +121,18 @@ void LinkedList<T>::insert(unsigned int xIndex, const T &t)
 }
 
 template<typename T>
-T LinkedList<T>::at(unsigned int xIndex)
+T &LinkedList<T>::at(unsigned int xIndex)
 {
-    if (xIndex >= mSize)
-        throw std::range_error("Index out of range!");
+    assert(xIndex < mSize);
+
+    Link *tLinkOnIndex = linkToIndex(xIndex);
+    return tLinkOnIndex->mValue;
+}
+
+template<typename T>
+const T &LinkedList<T>::at(unsigned int xIndex) const
+{
+    assert(xIndex < mSize);
 
     Link *tLinkOnIndex = linkToIndex(xIndex);
     return tLinkOnIndex->mValue;
@@ -90,25 +141,27 @@ T LinkedList<T>::at(unsigned int xIndex)
 template<typename T>
 void LinkedList<T>::assign(unsigned int xIndex, const T &t)
 {
-    if (xIndex >= mSize)
-        throw std::range_error("Index out of range!");
+    assert(xIndex < mSize);
 
     Link *tLinkOnIndex = linkToIndex(xIndex);
     tLinkOnIndex->mValue = t;
 }
 
 template<typename T>
-T LinkedList<T>::remove(unsigned int xIndex)
+void LinkedList<T>::remove(unsigned int xIndex)
 {
-    if (xIndex >= mSize)
-        throw std::range_error("Index out of range!");
+    assert(xIndex < mSize);
 
     Link *tLinkOnIndex = linkToIndex(xIndex);
     tLinkOnIndex->mPre->mNext = tLinkOnIndex->mNext;
     tLinkOnIndex->mNext->mPre = tLinkOnIndex->mPre;
-    T tValue = tLinkOnIndex->mValue;
     delete tLinkOnIndex;
-    return tValue;
+}
+
+template<typename T>
+unsigned int LinkedList<T>::size() const
+{
+    return mSize;
 }
 
 template<typename T>
@@ -122,7 +175,8 @@ void LinkedList<T>::init()
 }
 
 template<typename T>
-typename LinkedList<T>::Link *LinkedList<T>::linkToIndex(unsigned int xIndex)
+typename LinkedList<T>::Link *LinkedList<T>::linkToIndex(
+        unsigned int xIndex) const
 {
     Link *tWorkLink = mHead->mNext;
     unsigned int tCurrentIndex = 0;
@@ -137,28 +191,4 @@ typename LinkedList<T>::Link *LinkedList<T>::linkToIndex(unsigned int xIndex)
     return tWorkLink;
 }
 
-// bool
-//template class LinkedList<bool> ;
-//
-//// characters & strings
-//template class LinkedList<char> ;
-//template class LinkedList<char *> ;
-//template class LinkedList<const char *> ;
-//
-//// integers
-//template class LinkedList<signed char> ;
-//template class LinkedList<unsigned char> ;
-//template class LinkedList<short> ;
-//template class LinkedList<unsigned short> ;
-template class LinkedList<int> ;
-//template class LinkedList<unsigned int> ;
-//template class LinkedList<long> ;
-//template class LinkedList<unsigned long> ;
-//template class LinkedList<long long> ;
-//template class LinkedList<unsigned long long> ;
-//
-//// floats
-//template class LinkedList<float> ;
-//template class LinkedList<double> ;
-//template class LinkedList<long double> ;
-
+#endif /* LINKEDLIST_HPP_ */
